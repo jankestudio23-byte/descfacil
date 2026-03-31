@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador de Legenda - Diva Store</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+    p.sub {
+      margin: 0 0 24px;
+      color: #666;
+    }
+    .field {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d9d9d9;
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    input:focus, textarea:focus {
+      border-color: #111;
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+    }
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+    .buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    .primary {
+      background: #111;
+      color: #fff;
+    }
+    .secondary {
+      background: #ececec;
+      color: #111;
+    }
+    .output {
+      white-space: pre-wrap;
+      background: #fafafa;
+      border: 1px solid #ececec;
+      border-radius: 12px;
+      padding: 18px;
+      min-height: 320px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .small {
+      color: #777;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+        margin: 20px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Gerador de legenda</h1>
+      <p class="sub">Preencha os campos e gere uma descrição padrão para postar no Instagram.</p>
+
+      <div class="field">
+        <label for="descricao">Descrição da peça</label>
+        <textarea id="descricao" placeholder="Ex: Vestido midi com caimento leve e modelagem elegante."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="tamanho">Tamanho</label>
+        <input id="tamanho" type="text" placeholder="Ex: P, M e G" />
+      </div>
+
+      <div class="field">
+        <label for="tecido">Tecido</label>
+        <input id="tecido" type="text" placeholder="Ex: Viscolinho" />
+      </div>
+
+      <div class="field">
+        <label for="cor">Cor</label>
+        <input id="cor" type="text" placeholder="Ex: Bege" />
+      </div>
+
+      <div class="buttons">
+        <button class="primary" onclick="gerarLegenda()">Gerar legenda</button>
+        <button class="secondary" onclick="copiarLegenda()">Copiar</button>
+        <button class="secondary" onclick="limparCampos()">Limpar</button>
+      </div>
+
+      <div class="small">Os dados fixos da loja já ficam no final automaticamente.</div>
+    </div>
+
+    <div class="card">
+      <h1>Legenda pronta</h1>
+      <div id="resultado" class="output">Sua legenda aparecerá aqui...</div>
+    </div>
+  </div>
+
+  <script>
+    function gerarLegenda() {
+      const descricao = document.getElementById('descricao').value.trim();
+      const tamanho = document.getElementById('tamanho').value.trim();
+      const tecido = document.getElementById('tecido').value.trim();
+      const cor = document.getElementById('cor').value.trim();
+
+      const legenda = `✨ ${descricao || 'Descrição da peça'}
+
+📏 Tamanho: ${tamanho || '-'}
+🧵 Tecido: ${tecido || '-'}
+🎨 Cor: ${cor || '-'}
+
+📍 Av. Presidente Vargas 511, Arambaré/RS
+📦 Enviamos para todo o Brasil
+⏰ Seg à Dom 9:00 ao 12:00 - 14:00 às 19:00
+📞 51 99872-2723
+📲 @diva_store_delivery
+
+#moda #lookdodia #lojade roupas #instashop #modafeminina`;
+
+      document.getElementById('resultado').textContent = legenda;
+    }
+
+    function copiarLegenda() {
+      const texto = document.getElementById('resultado').textContent;
+      if (!texto || texto === 'Sua legenda aparecerá aqui...') return;
+
+      const textarea = document.createElement('textarea');
+      textarea.value = texto;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      alert('Legenda copiada com sucesso!');
+    }
+
+    function limparCampos() {
+      document.getElementById('descricao').value = '';
+      document.getElementById('tamanho').value = '';
+      document.getElementById('tecido').value = '';
+      document.getElementById('cor').value = '';
+      document.getElementById('resultado').textContent = 'Sua legenda aparecerá aqui...';
+    }
+  </script>
+</body>
+</html>
